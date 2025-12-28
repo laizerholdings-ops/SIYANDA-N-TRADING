@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIYANDA N TRADING | Infrastructure & Engineering Excellence Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'corporate-blue': '#1e3a8a',
+                        'brand-green': '#2D5A27',
+                        'brand-light-green': '#4ADE80',
+                        'brand-bg': '#0a0a0a',
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --brand-blue: #1e3a8a;
+            --brand-green: #2D5A27;
+            --brand-light-green: #4ADE80;
+            --brand-bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-dim: #a3a3a3;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body.light-mode {
+            --brand-bg: #f8fafc;
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Fixed Video Background Styling */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-bg-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(10, 10, 10, 0.6) 50%, 
+                rgba(10, 10, 10, 0.95) 100%);
+            z-index: 1;
+        }
+
+        body.light-mode .video-bg-container video { opacity: 0.05; }
+        body.light-mode .video-overlay { background: rgba(248, 250, 252, 0.92); }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .text-shimmer-brand {
+            background: linear-gradient(90deg, var(--brand-green) 0%, #ffffff 50%, var(--brand-green) 100%);
+            background-size: 200% auto;
+            color: var(--brand-green);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 4s linear infinite;
+        }
+
+        @keyframes textShimmer { to { background-position: 200% center; } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .faq-item.active .faq-content {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .whatsapp-pulse {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #mobile-menu.open { transform: translateX(0); }
+
+        .logo-nav {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+        @media (min-width: 768px) { .logo-nav { height: 110px; } }
+
+        /* Professional Executive Form Styling */
+        .form-input-executive {
+            @apply w-full bg-white/5 border border-white/10 p-4 md:p-5 rounded-2xl outline-none focus:border-brand-green focus:ring-4 focus:ring-brand-green/10 transition-all font-bold text-sm;
+        }
+        body.light-mode .form-input-executive {
+            @apply bg-slate-100 border-slate-200 text-slate-900 focus:bg-white;
+        }
+
+        .status-dot {
+            animation: status-pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes status-pulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(0.9); opacity: 1; }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 8rem);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Global Video Background Layer -->
+    <div class="video-bg-container">
+        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=2070">
+            <source src="background.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 py-3 md:py-6 px-4 transition-all duration-700">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-10 py-3 md:py-5 rounded-3xl border glass-card shadow-2xl">
+            <div class="flex items-center space-x-3 md:space-x-8 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <img src="logo.png" alt="Logo" class="logo-nav shrink-0" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x150?text=SN'">
+                <div class="flex flex-col">
+                    <span class="font-black text-lg md:text-3xl tracking-tighter uppercase leading-none text-inherit">SIYANDA N <span class="text-brand-green">TRADING</span></span>
+                    <span class="text-[7px] md:text-[10px] font-bold tracking-[0.4em] uppercase opacity-60 text-nowrap">Engineering Excellence</span>
+                </div>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden xl:flex items-center space-x-8 text-[11px] font-black uppercase tracking-[0.3em]">
+                <a href="#home" class="hover:text-brand-green transition-colors">Home</a>
+                <a href="#services" class="hover:text-brand-green transition-colors">services</a>
+                <a href="#about" class="hover:text-brand-green transition-colors">About us</a>
+                <a href="#contact" class="hover:text-brand-green transition-colors">contacts</a>
+                
+                <button id="theme-toggle" class="text-brand-green hover:scale-110 transition-transform ml-2">
+                    <i data-lucide="sun" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+
+                <a href="#contact" class="ml-4 px-6 py-4 bg-brand-green text-white rounded-xl font-black hover:bg-corporate-blue transition-all shadow-lg active:scale-95">Link Portal</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <div class="flex items-center space-x-4 xl:hidden">
+                <button id="theme-toggle-mobile" class="text-brand-green">
+                    <i data-lucide="sun" class="w-5 h-5"></i>
+                </button>
+                <button class="text-brand-green" id="mobile-toggle">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu" class="fixed inset-y-0 right-0 w-3/4 max-w-sm glass-card border-l z-[60] flex flex-col p-8 lg:hidden">
+        <div class="flex justify-between items-center mb-12">
+            <img src="logo.png" alt="Logo" class="h-10 w-auto" onerror="this.style.display='none'">
+            <button id="mobile-close" class="text-brand-green">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-8 text-[12px] font-black uppercase tracking-[0.4em]">
+            <a href="#home" class="mobile-link py-2 border-b border-white/5">Home</a>
+            <a href="#services" class="mobile-link py-2 border-b border-white/5">services</a>
+            <a href="#about" class="mobile-link py-2 border-b border-white/5">About us</a>
+            <a href="#contact" class="mobile-link py-2 border-b border-white/5 text-brand-green">contacts</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center text-center pt-24 px-6 overflow-hidden">
+        <div class="max-w-6xl z-10 reveal active">
+            <div class="inline-flex items-center space-x-3 px-5 py-2.5 bg-brand-green/10 border border-brand-green/20 rounded-full backdrop-blur-md mb-8">
+                <span class="w-2.5 h-2.5 bg-brand-green rounded-full animate-pulse"></span>
+                <span class="text-brand-green text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em]">National Infrastructure Active</span>
+            </div>
+            
+            <h1 class="hero-title font-black leading-[1] tracking-tighter uppercase text-white mb-8">
+                Structural <br />
+                <span class="text-shimmer-brand">Excellence.</span><br />
+                South Africa.
+            </h1>
+            
+            <p class="text-base md:text-2xl max-w-3xl font-medium leading-relaxed opacity-80 mx-auto text-white mb-12">
+                SIYANDA N TRADING (Pty) Ltd orchestrates high-performance civil engineering and sustainable development solutions nationwide.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                <a href="#contact" class="px-10 py-5 bg-brand-green text-white font-black rounded-2xl shadow-xl hover:bg-corporate-blue flex items-center justify-center uppercase tracking-widest text-xs active:scale-95 transition-all">
+                    Initiate Link <i data-lucide="radio" class="ml-3 w-5 h-5"></i>
+                </a>
+                <a href="#about" class="px-10 py-5 glass-card font-black rounded-2xl border border-white/20 transition-all flex items-center justify-center uppercase tracking-widest text-xs text-white">
+                    Corporate Profile
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Narrative Block -->
+    <section id="about" class="py-20 md:py-32 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center reveal mb-16 md:mb-24">
+                <h2 class="text-brand-green font-black uppercase tracking-[0.6em] text-[10px] md:text-xs mb-4">Regional Progress</h2>
+                <h3 class="text-3xl md:text-6xl font-black uppercase tracking-tighter text-white">Technical Resilience</h3>
+                <div class="w-20 md:w-32 h-1.5 bg-brand-green mx-auto mt-8 rounded-full"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto reveal">
+                <div class="glass-card p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative text-center">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-brand-green"></div>
+                    <div class="space-y-8 text-base md:text-xl font-medium opacity-75 leading-relaxed text-inherit">
+                        <p>SIYANDA N TRADING (Pty) Ltd is a multi-disciplinary company specialising in civil engineering, water and sanitation, electrical infrastructure, and environmental solutions. Founded in 2016 in Mpumalanga, we have built a reputation for excellence.</p>
+                        <p>We combine engineering expertise with sustainable practices to deliver infrastructure that creates long-term impact. As a youth-empowered firm, we are dedicated to closing South Africa’s development gap through precise structural engineering.</p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/10">
+                            <div>
+                                <div class="text-2xl md:text-4xl font-black text-brand-green counter" data-target="2016">0</div>
+                                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-50">Established</p>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-4xl font-black text-brand-green">100%</div>
+                                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-50">Black Owned</p>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-4xl font-black text-brand-green counter" data-target="50">0</div>
+                                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-50">Contracts</p>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-4xl font-black text-brand-green">Grade</div>
+                                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-widest opacity-50">CIDB Active</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Grid -->
+    <section id="services" class="py-20 md:py-32 px-6 relative z-10 bg-black/40 backdrop-blur-[2px]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center space-y-6 mb-20 md:mb-32 reveal">
+                <h2 class="text-brand-green font-black tracking-[0.5em] uppercase text-xs">Technical Capability</h2>
+                <h3 class="text-3xl md:text-7xl font-black tracking-tighter uppercase leading-none text-white">Engineering Matrix</h3>
+                <div class="w-24 md:w-48 h-2 bg-gradient-to-r from-brand-green via-white to-corporate-blue mx-auto mt-10 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] glass-card flex flex-col group hover:border-brand-green/40 reveal">
+                    <div class="w-14 h-14 bg-brand-green/10 rounded-2xl flex items-center justify-center mb-8 text-brand-green group-hover:bg-brand-green group-hover:text-white transition-all">
+                        <i data-lucide="map" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-xl md:text-2xl font-black mb-4 uppercase tracking-tighter text-white">Infrastructure</h4>
+                    <p class="text-sm opacity-60 mb-8 font-medium leading-relaxed">Road construction, bridge building, and industrial-grade national utility networks.</p>
+                </div>
+                <div class="p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] glass-card flex flex-col group hover:border-blue-600/40 reveal">
+                    <div class="w-14 h-14 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-8 text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <i data-lucide="droplet" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-xl md:text-2xl font-black mb-4 uppercase tracking-tighter text-white">Water & Sanitation</h4>
+                    <p class="text-sm opacity-60 mb-8 font-medium leading-relaxed">Technical management of water reticulation, purification, and sewage systems.</p>
+                </div>
+                <div class="p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] glass-card flex flex-col group hover:border-brand-green/40 reveal md:col-span-2 lg:col-span-1">
+                    <div class="w-14 h-14 bg-brand-green/10 rounded-2xl flex items-center justify-center mb-8 text-brand-green group-hover:bg-brand-green group-hover:text-white transition-all">
+                        <i data-lucide="leaf" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-xl md:text-2xl font-black mb-4 uppercase tracking-tighter text-white">Environmental</h4>
+                    <p class="text-sm opacity-60 mb-8 font-medium leading-relaxed">Integrated land remediation, waste management, and green infrastructure architecture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section - Centered Above Contact -->
+    <section id="testimonies" class="py-20 md:py-32 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="text-center mb-16 md:mb-24 reveal">
+                <h2 class="text-blue-400 font-black tracking-[0.5em] uppercase text-xs mb-4">Impact Evidence</h2>
+                <h3 class="text-3xl md:text-7xl font-black uppercase tracking-tighter text-white">Project Testimonials</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 text-left">
+                <!-- Testimony 1 -->
+                <div class="p-10 md:p-14 glass-card rounded-[3rem] reveal relative group border-t-4 border-brand-green">
+                    <i data-lucide="quote" class="absolute top-8 right-10 w-12 h-12 text-brand-green opacity-10"></i>
+                    <p class="text-base md:text-lg italic font-medium opacity-80 mb-12 leading-relaxed">"SIYANDA N TRADING delivered our water infrastructure project on time and within budget. Technical professionalism is unmatched."</p>
+                    <div class="flex items-center gap-6">
+                        <div class="w-12 h-12 bg-brand-green rounded-2xl flex items-center justify-center font-black text-white">MP</div>
+                        <div>
+                            <h5 class="font-black text-xs md:text-sm uppercase tracking-tight">Municipal Lead</h5>
+                            <p class="text-[9px] text-brand-green font-black uppercase tracking-widest">Mpumalanga</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimony 2 -->
+                <div class="p-10 md:p-14 glass-card rounded-[3rem] reveal relative group border-t-4 border-blue-600" style="transition-delay: 150ms;">
+                    <i data-lucide="quote" class="absolute top-8 right-10 w-12 h-12 text-blue-600 opacity-10"></i>
+                    <p class="text-base md:text-lg italic font-medium opacity-80 mb-12 leading-relaxed">"Strong technical expertise and excellent management. Highly recommended for private infrastructure developments."</p>
+                    <div class="flex items-center gap-6">
+                        <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center font-black text-white">GP</div>
+                        <div>
+                            <h5 class="font-black text-xs md:text-sm uppercase tracking-tight">Asset Developer</h5>
+                            <p class="text-[9px] text-blue-400 font-black uppercase tracking-widest">Gauteng Sector</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimony 3 -->
+                <div class="p-10 md:p-14 glass-card rounded-[3rem] reveal relative group border-t-4 border-brand-green" style="transition-delay: 300ms;">
+                    <i data-lucide="quote" class="absolute top-8 right-10 w-12 h-12 text-brand-green opacity-10"></i>
+                    <p class="text-base md:text-lg italic font-medium opacity-80 mb-12 leading-relaxed">"Commitment to community empowerment sets them apart. A partner you can genuinely trust for structural work."</p>
+                    <div class="flex items-center gap-6">
+                        <div class="w-12 h-12 bg-brand-green rounded-2xl flex items-center justify-center font-black text-white">LP</div>
+                        <div>
+                            <h5 class="font-black text-xs md:text-sm uppercase tracking-tight">Regional Partner</h5>
+                            <p class="text-[9px] text-brand-green font-black uppercase tracking-widest">Limpopo Region</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Centered Executive Contact Portal -->
+    <section id="contact" class="py-20 md:py-48 px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <div class="text-center mb-16 md:mb-24">
+                <h3 class="text-4xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9] text-white mb-10">Technical <br /><span class="text-brand-green text-shimmer-brand">Portal</span>.</h3>
+                <div class="w-16 md:w-24 h-1.5 bg-brand-green mx-auto mb-8 rounded-full"></div>
+                <p class="text-slate-400 font-black uppercase tracking-[0.4em] text-[9px] md:text-xs">Infrastructure Dispatch Terminal</p>
+            </div>
+
+            <!-- The Best Redesigned Centered Contact Form -->
+            <div class="glass-card p-8 md:p-20 rounded-[3rem] md:rounded-[4rem] shadow-[0_80px_160px_rgba(0,0,0,0.7)] border-0 text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-green/5 blur-[100px]"></div>
+                
+                <form id="contactForm" class="space-y-8 md:space-y-12" onsubmit="event.preventDefault(); handleDispatch(this);">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 ml-2 flex items-center">
+                                <i data-lucide="user" class="w-3 h-3 mr-2"></i> Representative Name
+                            </label>
+                            <input type="text" placeholder="Authorized Full Name" required class="form-input-executive">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 ml-2 flex items-center">
+                                <i data-lucide="building" class="w-3 h-3 mr-2"></i> Organization Name
+                            </label>
+                            <input type="text" placeholder="Entity / Directorate" required class="form-input-executive">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 ml-2 flex items-center">
+                                <i data-lucide="mail" class="w-3 h-3 mr-2"></i> Signal Address
+                            </label>
+                            <input type="email" placeholder="official@domain.co.za" required class="form-input-executive">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 ml-2 flex items-center">
+                                <i data-lucide="phone" class="w-3 h-3 mr-2"></i> Dispatch Hotline
+                            </label>
+                            <input type="tel" placeholder="076 031 2408" required class="form-input-executive">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 ml-2 flex items-center">
+                            <i data-lucide="file-text" class="w-3 h-3 mr-2"></i> Project Specification
+                        </label>
+                        <textarea placeholder="Describe the technical requirements, engineering scope, or service needs..." required class="form-input-executive h-56 md:h-64 resize-none"></textarea>
+                    </div>
+
+                    <button id="dispatchBtn" class="w-full bg-brand-green text-white font-black py-7 md:py-10 rounded-[2rem] md:rounded-[2.5rem] uppercase tracking-[0.6em] text-lg md:text-xl shadow-2xl hover:bg-blue-900 transition-all active:scale-[0.98] flex items-center justify-center group">
+                        <i data-lucide="send" class="mr-4 w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-2 transition-transform"></i>
+                        Transmit Signal
+                    </button>
+                </form>
+
+                <!-- Professional Contact Footing -->
+                <div class="mt-20 pt-14 border-t border-white/5 grid md:grid-cols-2 gap-12 text-center md:text-left">
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-slate-500 tracking-[0.3em] mb-4">Direct Link</p>
+                        <a href="mailto:sellokhoza2@gmail.com" class="text-lg md:text-2xl font-black text-inherit hover:text-brand-green transition-colors break-all">sellokhoza2@gmail.com</a>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-slate-500 tracking-[0.3em] mb-4">Regional HQ</p>
+                        <p class="text-base md:text-xl font-black text-inherit leading-tight uppercase opacity-80 tracking-tighter">Stand 1147, Steenbok, Nkomazi,<br>Mpumalanga, 1347</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5 bg-black px-6 text-center relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col items-center mb-10">
+                <img src="logo.png" alt="Logo" class="h-16 w-auto mb-6 opacity-70" onerror="this.style.display='none'">
+                <p class="text-[10px] font-black uppercase tracking-[0.8em] text-white opacity-40">
+                    © 2025 SIYANDA N TRADING (PTY) LTD. ALL TECHNICAL RIGHTS RESERVED.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Terminal -->
+    <a href="https://wa.me/27760312408" target="_blank" class="fixed bottom-8 right-8 w-16 h-16 md:w-24 md:h-24 bg-[#22C55E] rounded-[2rem] flex items-center justify-center z-50 whatsapp-pulse hover:scale-110 transition-all shadow-2xl group overflow-hidden">
+        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="md:w-[50px] md:h-[50px] relative z-10" fill="white" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+    </a>
+
+    <script>
+        lucide.createIcons();
+
+        // Theme Handling
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+        themeToggles.forEach(btn => {
+            if(!btn) return;
+            btn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                document.querySelectorAll('[data-lucide="sun"], [data-lucide="moon"]').forEach(icon => {
+                    const iconName = isLight ? 'moon' : 'sun';
+                    icon.parentElement.innerHTML = `<i data-lucide="${iconName}" class="${icon.classList.contains('w-5') ? 'w-5 h-5' : ''}"></i>`;
+                });
+                lucide.createIcons();
+            });
+        });
+
+        // Navigation Menu Logic
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mobileClose = document.getElementById('mobile-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const toggleMenu = () => mobileMenu.classList.toggle('open');
+        
+        mobileToggle.addEventListener('click', toggleMenu);
+        mobileClose.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (entry.target.querySelector('.counter')) startCounters(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function startCounters(container) {
+            container.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    const inc = target / 60;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 25);
+                    } else counter.innerText = target;
+                };
+                updateCount();
+            });
+        }
+
+        // Professional Dispatch Simulation
+        function handleDispatch(form) {
+            const btn = document.getElementById('dispatchBtn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check-circle" class="mr-4 w-8 h-8"></i> DISPATCHED';
+            btn.classList.add('bg-blue-900');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                form.reset();
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-blue-900');
+                lucide.createIcons();
+                alert('Professional Signal Dispatched to Directorate.');
+            }, 2500);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2', 'md:py-3');
+                nav.classList.remove('py-3', 'md:py-6');
+            } else {
+                nav.classList.add('py-3', 'md:py-6');
+                nav.classList.remove('py-2', 'md:py-3');
+            }
+        });
+    </script>
+</body>
+</html>
